@@ -36,9 +36,12 @@ public class ChatSpace {
 		Optional.ofNullable(getRoom(name)).ifPresent(r -> em.remove(r));
 	}
 
-	@Transactional
-	public void addMessage(ChatRoom room, ChatMessage message) {
-		room.add(message);
-		em.persist(message);
+	public boolean addMessage(String name, ChatMessage message) {
+		return Optional.ofNullable(getRoom(name)).map((r) -> {
+			r.add(message);
+			em.persist(message);
+			em.persist(r);
+			return true;
+		}).orElse(false);
 	}
 }

@@ -21,6 +21,9 @@ public class ChatRoom {
 	@OneToMany(cascade = CascadeType.ALL)
 	List<ChatMessage> messages = new ArrayList<>();
 
+	@Column()
+	int version;
+
 	public ChatRoom() {
 	}
 
@@ -34,9 +37,18 @@ public class ChatRoom {
 
 	public void add(ChatMessage message) {
 		messages.add(message);
+		version++;
 	}
 
 	public List<ChatMessage> getMessages() {
 		return messages;
+	}
+
+	public int getVersion() {
+		return version;
+	}
+
+	public void setVersion(int version) {
+		this.version = version;
 	}
 }

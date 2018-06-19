@@ -25,9 +25,9 @@ public class ChatController {
 
 	@GetMapping("/room")
 	@ResponseBody
-	public List<String> roomList() {
+	public ResponseEntity<List<String>> roomList() {
 		Collection<ChatRoom> room = chatSpace.getRooms();
-		return room.stream().map(x -> x.getName()).collect(Collectors.toList());
+		return new ResponseEntity<>(room.stream().map(x -> x.getName()).collect(Collectors.toList()), HttpStatus.OK);
 	}
 
 	@GetMapping("/room/{room}")
@@ -55,7 +55,7 @@ public class ChatController {
 	@PostMapping("/room/{room}")
 	@ResponseBody
 	public ResponseEntity<?> say(@PathVariable String room, @RequestBody ChatMessage message) {
-		Optional.ofNullable(chatSpace.getRoom(room)).ifPresent(chatRoom -> chatSpace.addMessage(chatRoom, message));
-		return new ResponseEntity<>(null, HttpStatus.OK);
+		boolean success = chatSpace.addMessage(room, message);
+		return new ResponseEntity<>(null, success ? HttpStatus.OK : HttpStatus.NOT_FOUND);
 	}
 }

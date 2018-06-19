@@ -25,6 +25,7 @@ public class RoomStepDefinition extends StepDefinition {
 	private TestRestTemplate testRestTemplate;
 
 	private static class RoomList extends ArrayList<String> {
+		private static final long serialVersionUID = 1L;
 	};
 
 	private RoomList roomList = null;
